@@ -10,7 +10,7 @@ namespace AOC
     {
         static void Main(string[] args)
         {
-            var solution = new Season2017.D02.Solution2();
+            var solution = new Season2017.D03.Solution1();
             solution.Solve();
             Console.WriteLine(solution.Result);
         }
