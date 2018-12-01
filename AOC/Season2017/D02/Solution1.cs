@@ -1,10 +1,5 @@
-﻿using AOC.Common.Input;
-using AOC.Common.Solution;
-using System;
-using System.Collections.Generic;
+﻿using AOC.Common.Solution;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AOC.Season2017.D02
 {
@@ -12,14 +7,14 @@ namespace AOC.Season2017.D02
     {
         public int Result { get; set; }
 
-        public Solution1(): base (new MyFileStream())
+        public Solution1()
         { }
 
-        public override void Solve()
+        public override void FindSolution()
         {
             while (!_stream.EndOfStream)
             {
-                var array = _inputHelper.ReadArrayInt32(delimiter: '\t');
+                var array = _stream.ReadArrayInt32(delimiter: '\t');
                 var min = array.Min();
                 var max = array.Max();
                 var diff = max - min;

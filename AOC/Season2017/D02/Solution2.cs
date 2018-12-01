@@ -8,14 +8,14 @@ namespace AOC.Season2017.D02
     {
         public int Result { get; set; }
 
-        public Solution2(): base (new MyFileStream())
+        public Solution2()
         { }
 
-        public override void Solve()
+        public override void FindSolution()
         {
             while (!_stream.EndOfStream)
             {
-                var array = _inputHelper.ReadArrayInt32(delimiter: '\t');
+                var array = _stream.ReadArrayInt32(delimiter: '\t');
                 Result += Compute(array);
             }
         }

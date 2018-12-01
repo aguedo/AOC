@@ -12,10 +12,10 @@ namespace AOC.Season2017.D01
     {
         public int Result { get; set; }
 
-        public Solution1(): base (new MyFileStream())
+        public Solution1()
         { }
 
-        public override void Solve()
+        public override void FindSolution()
         {
             var line = _stream.ReadLine();
             Result = 0;

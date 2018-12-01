@@ -1,10 +1,4 @@
-﻿using AOC.Common.Input;
-using AOC.Common.Solution;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AOC.Common.Solution;
 
 namespace AOC.Season2017.D01
 {
@@ -14,10 +8,10 @@ namespace AOC.Season2017.D01
 
         public int Result { get; set; }
 
-        public Solution2() : base(new MyFileStream())
+        public Solution2()
         { }
 
-        public override void Solve()
+        public override void FindSolution()
         {
             line = _stream.ReadLine();
             Result = 0;

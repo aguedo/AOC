@@ -1,10 +1,5 @@
-﻿using AOC.Common.Input;
-using AOC.Common.Solution;
+﻿using AOC.Common.Solution;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AOC.Season2017.D03
 {
@@ -18,10 +13,10 @@ namespace AOC.Season2017.D03
 
         public int Result { get; set; }
 
-        public Solution1(): base (new ConsoleStream())
+        public Solution1()
         { }
 
-        public override void Solve()
+        public override void FindSolution()
         {
             _position = int.Parse(_stream.ReadLine());
             ComputeSqrts();

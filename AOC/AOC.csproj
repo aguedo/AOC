@@ -43,9 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\Input\ConsoleStream.cs" />
-    <Compile Include="Common\Input\InputHelper.cs" />
-    <Compile Include="Common\Input\IStream.cs" />
     <Compile Include="Common\Input\MyFileStream.cs" />
     <Compile Include="Common\Solution\BaseSolution.cs" />
     <Compile Include="Common\Solution\ISolution.cs" />
@@ -57,6 +54,8 @@
     <Compile Include="Season2017\D02\Solution2.cs" />
     <Compile Include="Season2017\D02\Solution1.cs" />
     <Compile Include="Season2017\D03\Solution1.cs" />
+    <Compile Include="Seasson2018\D01\Solution1.cs" />
+    <Compile Include="Seasson2018\D01\Solution2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

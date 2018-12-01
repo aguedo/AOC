@@ -8,6 +8,6 @@ namespace AOC.Common.Solution
 {
     interface ISolution
     {
-        void Solve();
+        void FindSolution();
     }
 }
