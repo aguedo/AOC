@@ -1,61 +1,55 @@
 ﻿using AOC.Common.Solution;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AOC.Season2018.D02
 {
     class Solution1 : BaseSolution
     {
+        private int _contains2 = 0;
+        private int _contains3 = 0;
+
         public override void FindSolution()
         {
-            var c3 = 0;
-            var c2 = 0;
-
             while (!_stream.EndOfStream)
             {
                 var line = _stream.ReadLine();
-                if (Contains3(line))
-                    c3++;
-                if (Contains2(line))
-                    c2++;
+                CheckLine(line);
             }
 
-            var res = c3 * c2;
-            Console.WriteLine(res);
+            var result = _contains2 * _contains3;
+            Console.WriteLine(result);
         }
 
-        private bool Contains2(string line)
+        private void CheckLine(string line)
         {
-            var dict = new Dictionary<char, int>();
+            var dictionary = new Dictionary<char, int>();
             for (int i = 0; i < line.Length; i++)
             {
                 var currrent = line[i];
-                if (!dict.ContainsKey(currrent))
-                    dict[currrent] = 0;
-
-
-                dict[currrent] += 1;
+                if (!dictionary.ContainsKey(currrent))
+                    dictionary[currrent] = 0;
+                dictionary[currrent] += 1;
             }
 
-            return dict.Any(t => t.Value == 2);
-        }
-
-        private bool Contains3(string line)
-        {
-            var dict = new Dictionary<char, int>();
-            for (int i = 0; i < line.Length; i++)
+            var flag2 = false;
+            var flag3 = false;
+            foreach (var value in dictionary.Values)
             {
-                var currrent = line[i];
-                if (!dict.ContainsKey(currrent))
-                    dict[currrent] = 0;
+                if (value == 2 && !flag2)
+                {
+                    flag2 = true;
+                    _contains2++;
+                }
+                else if (value == 3 && !flag3)
+                {
+                    flag3 = true;
+                    _contains3++;
+                }
 
-                dict[currrent] += 1;
+                if (flag2 && flag3)
+                    return;
             }
-
-
-            return dict.Any(t => t.Value == 3);
-
         }
     }
 }
