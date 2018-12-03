@@ -11,6 +11,59 @@ namespace AOC.Season2018.D03
     {
         public override void FindSolution()
         {
+            var len = 1000;
+            var area = new int[len, len];
+
+            var idDict = new Dictionary<int, bool>();
+
+            while (!_stream.EndOfStream)
+            {
+                var line = _stream.ReadLine();
+                var claim = GetClaim(line);
+                var any = false;
+
+                for (var i = claim.Left; i < claim.Left + claim.Width; i++)
+                {
+                    for (int j = claim.Top; j < claim.Top + claim.High; j++)
+                    {
+                        var current = area[i, j];
+                        if (current != 0)
+                        {
+                            any = true;
+                            idDict[current] = false;
+                        }
+                        else
+                            area[i, j] = claim.Id;
+                    }
+                }
+
+                if (!any)
+                    idDict[claim.Id] = true;
+            }
+
+            var result = idDict.First(t => t.Value).Key;
+
+            Console.WriteLine(result);
+        }
+
+        private (int Id, int Left, int Top, int Width, int High) GetClaim(string line)
+        {
+            // Todo: try with regex
+            var temp = line.Split(' ').ToArray();
+            var position = temp[2];
+            var temp2 = position.Split(',');
+            var left = int.Parse(temp2[0]);
+            var top = int.Parse(temp2[1].Substring(0, temp2[1].Length - 1));
+            var size = temp[3].Split('x');
+            var width = int.Parse(size[0]);
+            var high = int.Parse(size[1]);
+            var id = int.Parse(temp[0].Substring(1, temp[0].Length - 1));
+
+            return (id, left, top, width, high);
+        }
+
+        public void FindSolutionOld()
+        {
             // Todo: refactor and try better solution
 
             var len = 1000;
@@ -66,6 +119,6 @@ namespace AOC.Season2018.D03
 
             Console.WriteLine(ids[0]);
 
-        }
+        }             
     }
 }

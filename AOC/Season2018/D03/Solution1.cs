@@ -11,8 +11,30 @@ namespace AOC.Season2018.D03
     {
         public override void FindSolution()
         {
-            // Todo: refactor and try better solution
+            var len = 1000;
+            var area = new int[len, len];
 
+            while (!_stream.EndOfStream)
+            {
+                var line = _stream.ReadLine();
+                var claim = GetClaim(line);
+
+                for (var i = claim.Left; i < claim.Left + claim.Width; i++)
+                    for (int j = claim.Top; j < claim.Top + claim.High; j++)
+                        area[i, j] += 1;
+            }
+
+            var total = 0;
+            for (var i = 0; i < len; i++)
+                for (int j = 0; j < len; j++)
+                    if (area[i, j] > 1)
+                        total++;
+
+            Console.WriteLine(total);
+        }
+
+        public void FindSolutionOld()
+        {
             var len = 1000;
             var area = new int[len, len];
 
@@ -50,6 +72,22 @@ namespace AOC.Season2018.D03
 
             Console.WriteLine(total);
 
+        }
+
+        private (int Id, int Left, int Top, int Width, int High) GetClaim(string line)
+        {
+            // Todo: try with regex
+            var temp = line.Split(' ').ToArray();
+            var position = temp[2];
+            var temp2 = position.Split(',');
+            var left = int.Parse(temp2[0]);
+            var top = int.Parse(temp2[1].Substring(0, temp2[1].Length - 1));
+            var size = temp[3].Split('x');
+            var width = int.Parse(size[0]);
+            var high = int.Parse(size[1]);
+            var id = int.Parse(temp[0].Substring(1, temp[0].Length - 1));
+
+            return (id, left, top, width, high);
         }
     }
 }

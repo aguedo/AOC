@@ -19,10 +19,10 @@ namespace AOC.Season2018.D02
             for (int i = 0; i < _lines.Count; i++)
             {
                 var line1 = _lines[i];
-                for (int j = 0; j < _lines.Count; j++)
+                for (int j = i + 1; j < _lines.Count; j++)
                 {
                     var line2 = _lines[j];
-                    if (i != j && line1.Length == line2.Length)
+                    if (line1.Length == line2.Length)
                     {
                         var index = FindIndex(line1, line2);
                         if (index >= 0)
