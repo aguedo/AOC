@@ -14,7 +14,7 @@ namespace AOC.Season2017.D02
         {
             while (!_stream.EndOfStream)
             {
-                var array = _stream.ReadArrayInt32(delimiter: '\t');
+                var array = _stream.ReadInt32ArrayLine(delimiter: '\t');
                 var min = array.Min();
                 var max = array.Max();
                 var diff = max - min;

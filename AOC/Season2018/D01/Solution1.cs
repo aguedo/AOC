@@ -10,7 +10,7 @@ namespace AOC.Season2018.D01
             long total = 0;
             while (!_stream.EndOfStream)
             {
-                var value = _stream.ReadLong();
+                var value = _stream.ReadLongLine();
                 total += value;
             }
 

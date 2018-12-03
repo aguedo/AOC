@@ -54,10 +54,12 @@
     <Compile Include="Season2017\D02\Solution2.cs" />
     <Compile Include="Season2017\D02\Solution1.cs" />
     <Compile Include="Season2017\D03\Solution1.cs" />
-    <Compile Include="Seasson2018\D01\Solution1.cs" />
-    <Compile Include="Seasson2018\D01\Solution2.cs" />
-    <Compile Include="Seasson2018\D02\Solution1.cs" />
-    <Compile Include="Seasson2018\D02\Solution2.cs" />
+    <Compile Include="Season2018\D01\Solution1.cs" />
+    <Compile Include="Season2018\D01\Solution2.cs" />
+    <Compile Include="Season2018\D02\Solution1.cs" />
+    <Compile Include="Season2018\D02\Solution2.cs" />
+    <Compile Include="Season2018\D03\Solution1.cs" />
+    <Compile Include="Season2018\D03\Solution2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AOC.Common.Solution
 {
-    interface ISolution
+    interface ISolution: IDisposable
     {
         void FindSolution();
     }

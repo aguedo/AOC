@@ -4,8 +4,8 @@
     {
         static void Main(string[] args)
         {
-            var solution = new Season2018.D02.Solution2();
-            solution.FindSolution();
+            using (var solution = new Season2018.D03.Solution2())
+                solution.FindSolution();
         }
     }
 }

@@ -4,8 +4,13 @@ namespace AOC.Common.Solution
 {
     abstract class BaseSolution : ISolution
     {
-        protected MyFileStream _stream = new MyFileStream();
+        protected MyFileStream _stream = new MyFileStream();        
 
         public abstract void FindSolution();
+
+        public virtual void Dispose()
+        {
+            _stream.Dispose();
+        }
     }
 }

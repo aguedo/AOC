@@ -15,7 +15,7 @@ namespace AOC.Season2017.D02
         {
             while (!_stream.EndOfStream)
             {
-                var array = _stream.ReadArrayInt32(delimiter: '\t');
+                var array = _stream.ReadInt32ArrayLine(delimiter: '\t');
                 Result += Compute(array);
             }
         }
