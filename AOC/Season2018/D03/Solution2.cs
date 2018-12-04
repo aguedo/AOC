@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace AOC.Season2018.D03
@@ -48,6 +49,19 @@ namespace AOC.Season2018.D03
 
         private (int Id, int Left, int Top, int Width, int High) GetClaim(string line)
         {
+            var pattern = @"#(\d+)\s@\s(\d+),(\d+):\s(\d+)x(\d+)";
+            var groups = Regex.Matches(line, pattern)[0].Groups;
+            var id = Convert.ToInt32(groups[1].Value);
+            var left = Convert.ToInt32(groups[2].Value);
+            var top = Convert.ToInt32(groups[3].Value);
+            var width = Convert.ToInt32(groups[4].Value);
+            var high = Convert.ToInt32(groups[5].Value);
+
+            return (id, left, top, width, high);
+        }
+
+        private (int Id, int Left, int Top, int Width, int High) GetClaim2(string line)
+        {
             // Todo: try with regex
             var temp = line.Split(' ').ToArray();
             var position = temp[2];
@@ -60,7 +74,7 @@ namespace AOC.Season2018.D03
             var id = int.Parse(temp[0].Substring(1, temp[0].Length - 1));
 
             return (id, left, top, width, high);
-        }
+        }        
 
         public void FindSolutionOld()
         {
