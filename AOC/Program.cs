@@ -4,7 +4,7 @@
     {
         static void Main(string[] args)
         {
-            using (var solution = new Season2018.D03.Solution2())
+            using (var solution = new Season2018.D04.Solution2())
                 solution.FindSolution();
         }
     }
