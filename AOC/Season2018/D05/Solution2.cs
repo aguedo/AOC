@@ -71,57 +71,5 @@ namespace AOC.Season2018.D05
 
             return index2;
         }
-
-
-
-
-
-
-        public void FindSolution2()
-        {
-            var str = _stream.ReadLine();
-
-            var min = int.MaxValue;
-            for (int i = 65; i <= 65 + 32; i++)
-            {
-                var temp = Compute(str, i);
-                if (temp < min)
-                    min = temp;
-            }
-
-            Console.WriteLine(min);
-        }
-
-        private int Compute(string str, int n)
-        {
-            var c1 = (char)n;
-            var c2 = (char)(n + 32);
-            //str = String.Join("", str.Where(t => t != c1 && t != c2));
-            str = str.Replace(c1.ToString(), "");
-            str = str.Replace(c2.ToString(), "");
-            while (true)
-            {
-                var found = false;
-
-                for (int i = 0; i < str.Length - 1; i++)
-                {
-                    int current = str[i];
-                    int next = str[i + 1];
-                    if (Math.Abs(current - next) == 32)
-                    {
-                        var temp1 = str[i];
-                        var temp2 = str[i + 1];
-                        str = str.Remove(i, 2);
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (!found)
-                {
-                    return str.Length;
-                }
-            }
-        }
     }
 }
