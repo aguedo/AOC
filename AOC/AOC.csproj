@@ -65,6 +65,7 @@
     <Compile Include="Season2018\D04\Solution2.cs" />
     <Compile Include="Season2018\D05\Solution1.cs" />
     <Compile Include="Season2018\D05\Solution2.cs" />
+    <Compile Include="Season2018\D06\Coord.cs" />
     <Compile Include="Season2018\D06\Solution1.cs" />
     <Compile Include="Season2018\D06\Solution2.cs" />
   </ItemGroup>
