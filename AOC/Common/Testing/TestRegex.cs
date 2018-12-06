@@ -11,12 +11,27 @@ namespace AOC.Common.Testing
     {
         public void Test()
         {
-            var line = "";
-            var pattern = @"";
-            var groups = Regex.Match(line, pattern).Groups;
+            var line = "this this this sdf";
+            var pattern = @"\s?(\w+)(\s(\1))+";
 
-            var match = Regex.Match(line, pattern);
+            foreach (Match match in Regex.Matches(line, pattern))
+            {
+                var groups = match.Groups;
+            }
 
+            var temp = Regex.Replace(line, pattern, "hello");
+
+            var matchEvaluator = new MatchEvaluator(Evaluator);
+            var temp1 = Regex.Replace(line, pattern, matchEvaluator);
+
+            var groups1 = Regex.Match(line, pattern).Groups;
+
+        }
+
+        private string Evaluator(Match match)
+        {
+            var word = match.Groups[1].Value;
+            return word;
         }
     }
 }

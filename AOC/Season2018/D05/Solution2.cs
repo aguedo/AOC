@@ -5,7 +5,7 @@ namespace AOC.Season2018.D05
 {
     class Solution2 : BaseSolution
     {
-        private bool[] _flags;
+        private bool[] _hash;
         private string _str;
         private int _len;
         private int _skip;
@@ -28,7 +28,7 @@ namespace AOC.Season2018.D05
 
         private void FindSolution1()
         {
-            _flags = new bool[_str.Length];
+            _hash = new bool[_str.Length];
             _len = _str.Length;
 
             var skipC1 = (char)_skip;
@@ -37,7 +37,7 @@ namespace AOC.Season2018.D05
             {
                 if (_str[i] == skipC1 || _str[i] == skipC2)
                 {
-                    _flags[i] = true;
+                    _hash[i] = true;
                     _len--;
                 }
             }
@@ -49,22 +49,22 @@ namespace AOC.Season2018.D05
 
         private int Match(int index1, int index2)
         {
-            while (index1 >= 0 && (_flags[index1]))
+            while (index1 >= 0 && (_hash[index1]))
                 index1--;
             if (index1 < 0)
                 return index2;
 
-            while (index2 < _flags.Length && _flags[index2])
+            while (index2 < _hash.Length && _hash[index2])
                 index2++;
-            if (index2 >= _flags.Length)
+            if (index2 >= _hash.Length)
                 return index2;
 
             var c1 = (int)_str[index1];
             var c2 = (int)_str[index2];
             if (Math.Abs(c1 - c2) == 32)
             {
-                _flags[index1] = true;
-                _flags[index2] = true;
+                _hash[index1] = true;
+                _hash[index2] = true;
                 _len -= 2;
                 return Match(index1 - 1, index2 + 1);
             }

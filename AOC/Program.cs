@@ -1,11 +1,16 @@
-﻿namespace AOC
+﻿using AOC.Common.Testing;
+
+namespace AOC
 {
     class Program
     {
         static void Main(string[] args)
         {
-            using (var solution = new Season2018.D05.Solution2())
-                solution.FindSolution();
+            var test = new TestRegex();
+            test.Test();
+
+            //using (var solution = new Season2018.D06.Solution1())
+            //    solution.FindSolution();
         }
     }
 }
