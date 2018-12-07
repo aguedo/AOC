@@ -9,41 +9,58 @@ namespace AOC.Season2018.D06
 {
     class Solution1 : BaseSolution
     {
+        private List<Coord> _coords = new List<Coord>();
+        private int _length = int.MinValue;
+        private Cell[,] _board;
+
         public override void FindSolution()
         {
-            // TODO: refactor. (try with graph algorithms)
+            ReadCoords();
+            LoadBoard();
+            CountRegions();           
+        }
 
-            var lines = _stream.ReadStringDocument();
-            var coords = new List<Coord>();
-            var max = int.MinValue;
-            for (int i = 0; i < lines.Count; i++)
+        private void CountRegions()
+        {
+            var dict = new Dictionary<int, int>();
+            for (int i = 0; i < _length; i++)
             {
-                var temp = lines[i].Split(',');
-                var coord = new Coord
+                for (int j = 0; j < _length; j++)
                 {
-                    X = int.Parse(temp[0]),
-                    Y = int.Parse(temp[1]),
-                    Id = i
-                };
-                if (coord.X > max)
-                    max = coord.X;
-                if (coord.Y > max)
-                    max = coord.Y;
-                coords.Add(coord);
+                    var cell = _board[i, j];
+                    if (cell.Active)
+                    {
+                        if (!dict.ContainsKey(cell.Id))
+                            dict[cell.Id] = 0;
+
+                        if (i == 0 || i == _length - 1 || j == 0 || j == _length - 1)
+                        {
+                            dict[cell.Id] = -1;
+                        }
+
+                        if (dict[cell.Id] >= 0)
+                            dict[cell.Id] += 1;
+                    }
+                }
             }
 
-            var board = new Cell[max, max];
+            var solution = dict.Max(t => t.Value);
+            Console.WriteLine(solution);
+        }
 
-            foreach (var item in coords)
+        private void LoadBoard()
+        {
+            _board = new Cell[_length, _length];
+            foreach (var item in _coords)
             {
-                for (int i = 0; i < max; i++)
+                for (int i = 0; i < _length; i++)
                 {
-                    for (int j = 0; j < max; j++)
+                    for (int j = 0; j < _length; j++)
                     {
-                        if (board[i, j] == null)
-                            board[i, j] = new Cell();
+                        if (_board[i, j] == null)
+                            _board[i, j] = new Cell();
 
-                        var cell = board[i, j];
+                        var cell = _board[i, j];
                         var dist = Math.Abs(item.X - i) + Math.Abs(item.Y - j);
                         if (cell.Dist > dist)
                         {
@@ -58,31 +75,26 @@ namespace AOC.Season2018.D06
                     }
                 }
             }
+        }
 
-            var dict = new Dictionary<int, int>();
-            for (int i = 0; i < max; i++)
+        private void ReadCoords()
+        {
+            var lines = _stream.ReadStringDocument();            
+            for (int i = 0; i < lines.Count; i++)
             {
-                for (int j = 0; j < max; j++)
+                var temp = lines[i].Split(',');
+                var coord = new Coord
                 {
-                    var cell = board[i, j];
-                    if (cell.Active)
-                    {
-                        if (!dict.ContainsKey(cell.Id))
-                            dict[cell.Id] = 0;
-
-                        if (i == 0 || i == max - 1 || j == 0 || j == max - 1)
-                        {
-                            dict[cell.Id] = -1;
-                        }
-
-                        if (dict[cell.Id] >= 0)
-                            dict[cell.Id] += 1;
-                    }
-                }
+                    X = int.Parse(temp[0]),
+                    Y = int.Parse(temp[1]),
+                    Id = i
+                };
+                if (coord.X > _length)
+                    _length = coord.X;
+                if (coord.Y > _length)
+                    _length = coord.Y;
+                _coords.Add(coord);
             }
-
-            var solution = dict.Where(t => t.Value >= 0).Max(t => t.Value);
-            Console.WriteLine(solution);
         }
 
         class Cell

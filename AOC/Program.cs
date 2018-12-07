@@ -9,7 +9,7 @@ namespace AOC
             //var test = new TestRegex();
             //test.Test();
 
-            using (var solution = new Season2018.D06.Solution2())
+            using (var solution = new Season2018.D06.Solution1())
                 solution.FindSolution();
         }
     }
