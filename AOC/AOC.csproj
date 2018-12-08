@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Graph.cs" />
     <Compile Include="Common\Input\MyFileStream.cs" />
     <Compile Include="Common\Solution\BaseSolution.cs" />
     <Compile Include="Common\Solution\ISolution.cs" />
