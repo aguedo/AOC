@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\Graph.cs" />
+    <Compile Include="Common\Graphs\Graph.cs" />
     <Compile Include="Common\Input\MyFileStream.cs" />
     <Compile Include="Common\Solution\BaseSolution.cs" />
     <Compile Include="Common\Solution\ISolution.cs" />
@@ -71,6 +71,8 @@
     <Compile Include="Season2018\D06\Solution2.cs" />
     <Compile Include="Season2018\D07\Solution1.cs" />
     <Compile Include="Season2018\D07\Solution2.cs" />
+    <Compile Include="Season2018\D08\Solution1.cs" />
+    <Compile Include="Season2018\D08\Solution2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
