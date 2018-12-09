@@ -74,6 +74,8 @@
     <Compile Include="Season2018\D07\Solution2.cs" />
     <Compile Include="Season2018\D08\Solution1.cs" />
     <Compile Include="Season2018\D08\Solution2.cs" />
+    <Compile Include="Season2018\D09\Solution1.cs" />
+    <Compile Include="Season2018\D09\Solution2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
