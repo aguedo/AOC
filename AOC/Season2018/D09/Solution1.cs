@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AOC.Season2018.D09
 {
@@ -11,60 +9,43 @@ namespace AOC.Season2018.D09
     {
         public override void FindSolution()
         {
-            var players = 427;
-            var points = 70723;
+            FindScore(427, 70723);
+        }
 
-            var node0 = new Node(0);
-            var node1 = new Node(1);
-            var node2 = new Node(2);
-            var node3 = new Node(3);
-
-            node0.Next = node2;
-            node0.Prev = node3;
-            node1.Next = node3;
-            node1.Prev = node2;
-            node2.Next = node1;
-            node2.Prev = node0;
-            node3.Next = node0;
-            node3.Prev = node1;           
-            
-
-            var current = node3;
-
-            var dict = new Dictionary<int, int>();
-
-            for (int i = 4; i <= points; i++)
+        protected void FindScore(int playerCount, int pointCount)
+        {
+            var current = new Node(0);
+            current.Next = current;
+            current.Prev = current;
+            var players = new Dictionary<int, long>();
+            for (int i = 1; i <= pointCount; i++)
             {
                 if (i % 23 == 0)
                 {
-                    var player = i % players;
-                    if (!dict.ContainsKey(player))
-                        dict[player] = 0;
-                    dict[player] += i;
+                    var player = i % playerCount;
+                    if (!players.ContainsKey(player))
+                        players[player] = 0;
+                    players[player] += i;
                     for (int j = 0; j < 7; j++)
-                    {
                         current = current.Prev;
-                    }
 
-                    dict[player] += current.Value;
+                    players[player] += current.Value;
                     current.Prev.Next = current.Next;
                     current = current.Next;
                 }
                 else
-                {                    
+                {
                     var node = new Node(i);
-                    var next = current.Next;
-                    node.Next = next.Next;
-                    next.Next = node;
-                    node.Prev = next;
+                    node.Next = current.Next.Next;
+                    current.Next.Next = node;
+                    node.Prev = current.Next;
                     node.Next.Prev = node;
                     current = node;
                 }
             }
 
-            var win = dict.Max(t => t.Value);
-            Console.WriteLine(win);
-
+            var winning = players.Max(t => t.Value);
+            Console.WriteLine(winning);
         }
 
         class Node
