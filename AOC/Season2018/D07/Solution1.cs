@@ -1,15 +1,69 @@
-﻿using AOC.Common.Solution;
+﻿using AOC.Common.Graphs;
+using AOC.Common.Solution;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AOC.Season2018.D07
 {
     class Solution1 : BaseSolution
     {
+        private Graph<char, int> _graph = new Graph<char, int>(true);
+        private StringBuilder _solution = new StringBuilder();
+
         public override void FindSolution()
+        {
+            BuildGraph();
+            BuildSolution();
+
+            Console.WriteLine(_solution.ToString());
+        }
+
+        private void BuildSolution()
+        {
+            var leaves = new SortedSet<Node<char, int>>(new NodeComparer());
+            var visited = new HashSet<Node<char, int>>();
+
+            while (visited.Count < _graph.Count)
+            {
+                Node<char, int> top = null;
+                if (leaves.Count > 0)
+                {
+                    top = leaves.First();
+                    leaves.Remove(top);
+                    visited.Add(top);
+                    _solution.Append(top.Id);
+                }
+
+                foreach (var node in _graph.GetAllNodes())
+                {
+                    if (top != null)
+                        _graph.RemoveEdge(node, top);
+
+                    if (visited.Contains(node))
+                        continue;
+
+                    if (_graph.IsLeaf(node))
+                        leaves.Add(node);
+                }
+            }
+        }
+
+        private void BuildGraph()
+        {
+            var lines = _stream.ReadStringDocument();
+            for (int i = 0; i < lines.Count; i++)
+            {
+                var line = lines[i];
+                var temp = line.Split(' ');
+                var n1 = temp[1][0];
+                var n2 = temp[7][0];
+                _graph.AddEdge(n2, n1);
+            }
+        }
+
+        public void FindSolutionOld()
         {
             var steps = new HashSet<string>();
             var lines = _stream.ReadStringDocument();
@@ -69,6 +123,14 @@ namespace AOC.Season2018.D07
             Console.WriteLine(result.Length);
             Console.WriteLine(dict.Count);
             Console.WriteLine(result);
+        }
+    }
+
+    internal class NodeComparer : IComparer<Node<char, int>>
+    {
+        public int Compare(Node<char, int> x, Node<char, int> y)
+        {
+            return x.Id.CompareTo(y.Id);
         }
     }
 }

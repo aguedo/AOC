@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Graphs\DFS.cs" />
     <Compile Include="Common\Graphs\Graph.cs" />
     <Compile Include="Common\Input\MyFileStream.cs" />
     <Compile Include="Common\Solution\BaseSolution.cs" />
