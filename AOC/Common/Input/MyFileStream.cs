@@ -4,7 +4,7 @@ using System.IO;
 
 namespace AOC.Common.Input
 {
-    class MyFileStream : IDisposable
+    public class MyFileStream : IDisposable
     {
         private readonly StreamReader _reader = new StreamReader(File.OpenRead("input.txt"));
         private readonly StreamWriter _writer = new StreamWriter(File.OpenWrite("output.txt"));

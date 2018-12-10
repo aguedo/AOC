@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F8FEA540-11B9-43E4-A731-EC0312ADD7DB}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>AOC</RootNamespace>
-    <AssemblyName>AOC</AssemblyName>
+    <ProjectGuid>{8217F7D1-1651-4270-AB79-B96896D01457}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>WindowsFormsApp1</RootNamespace>
+    <AssemblyName>WindowsFormsApp1</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -39,49 +39,51 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\Graphs\DFS.cs" />
-    <Compile Include="Common\Graphs\Graph.cs" />
-    <Compile Include="Common\Input\MyFileStream.cs" />
-    <Compile Include="Common\Solution\BaseSolution.cs" />
-    <Compile Include="Common\Solution\ISolution.cs" />
-    <Compile Include="Common\Solution\EmptySolution.cs" />
-    <Compile Include="Common\Testing\TestRegex.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Season2017\D01\Solution1.cs" />
-    <Compile Include="Season2017\D01\Solution2.cs" />
-    <Compile Include="Season2017\D02\Solution2.cs" />
-    <Compile Include="Season2017\D02\Solution1.cs" />
-    <Compile Include="Season2017\D03\Solution1.cs" />
-    <Compile Include="Season2018\D01\Solution1.cs" />
-    <Compile Include="Season2018\D01\Solution2.cs" />
-    <Compile Include="Season2018\D02\Solution1.cs" />
-    <Compile Include="Season2018\D02\Solution2.cs" />
-    <Compile Include="Season2018\D03\Solution1.cs" />
-    <Compile Include="Season2018\D03\Solution2.cs" />
-    <Compile Include="Season2018\D04\Solution1.cs" />
-    <Compile Include="Season2018\D04\Solution2.cs" />
-    <Compile Include="Season2018\D05\Solution1.cs" />
-    <Compile Include="Season2018\D05\Solution2.cs" />
-    <Compile Include="Season2018\D06\Coord.cs" />
-    <Compile Include="Season2018\D06\Solution1.cs" />
-    <Compile Include="Season2018\D06\Solution2.cs" />
-    <Compile Include="Season2018\D07\Solution1.cs" />
-    <Compile Include="Season2018\D07\Solution2.cs" />
-    <Compile Include="Season2018\D08\Solution1.cs" />
-    <Compile Include="Season2018\D08\Solution2.cs" />
-    <Compile Include="Season2018\D09\Solution1.cs" />
-    <Compile Include="Season2018\D09\Solution2.cs" />
-    <Compile Include="Season2018\D10\Solution1.cs" />
-    <Compile Include="Season2018\D10\Solution2.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\AOC\AOC.csproj">
+      <Project>{f8fea540-11b9-43e4-a731-ec0312add7db}</Project>
+      <Name>AOC</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

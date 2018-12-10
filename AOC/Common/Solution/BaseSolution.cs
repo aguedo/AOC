@@ -2,7 +2,7 @@
 
 namespace AOC.Common.Solution
 {
-    abstract class BaseSolution : ISolution
+    public abstract class BaseSolution : ISolution
     {
         protected MyFileStream _stream = new MyFileStream();        
 
