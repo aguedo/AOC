@@ -37,39 +37,48 @@ namespace AOC.Season2018.D11
             var y = -1;
             var size = -1;
             var max = long.MinValue;
-
-            var temp = _grid[200, 200];
-
             for (int i = 0; i < _len; i++)
             {
                 for (int j = 0; j < _len; j++)
                 {
-                    for (int k = 0; k < _len; k++)
+                    long tempPower = 0;
+                    var maxIndex = Math.Max(i, j);
+                    for (int k = 0; k + maxIndex < _len; k++)
                     {
                         var power = GetPower(i, j, k + 1);
-                        if (power > max)
+                        tempPower += power;
+                        if (tempPower > max)
                         {
-                            max = power;
+                            max = tempPower;
                             x = i + 1;
                             y = j + 1;
                             size = k + 1;
                         }
-                    }                    
+                    }
                 }
             }
 
-            Console.WriteLine(x);
-            Console.WriteLine(y);
+            Console.WriteLine($"{x},{y},{size}");
         }
 
         private long GetPower(int x, int y, int size)
         {
             long result = 0;
-            for (int i = x; i < x + size && i < _len; i++)
+            var xIndex = x + size - 1;
+            if (xIndex < _len)
             {
-                for (int j = y; j < y + size && j < _len; j++)
+                for (int i = y; i < y + size && i < _len; i++)
                 {
-                    result += _grid[i, j];
+                    result += _grid[xIndex, i];
+                }
+            }
+
+            var yIndex = y + size - 1;
+            if (yIndex < _len)
+            {
+                for (int i = x; i < x + size - 1 && i < _len; i++)
+                {
+                    result += _grid[i, yIndex];
                 }
             }
 
