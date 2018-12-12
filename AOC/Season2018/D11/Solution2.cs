@@ -10,26 +10,26 @@ namespace AOC.Season2018.D11
     class Solution2 : BaseSolution
     {
         private long[,] _grid;
-        private int _len = 300;
+        private int _length = 300;
 
         public override void FindSolution()
         {
-            var serial = 8772;
-            _grid = new long[_len, _len];
+            var time = Environment.TickCount;
 
-            for (int i = 0; i < _len; i++)
+            var serial = 8772;
+            _grid = new long[_length, _length];
+
+            for (int i = 0; i < _length; i++)
             {
                 var rackId = i + 1 + 10;
-                for (int j = 0; j < _len; j++)
+                for (int j = 0; j < _length; j++)
                 {
                     var power = rackId * (j + 1);
                     power += serial;
                     power *= rackId;
-                    power = power / 100 % 10;
+                    power = power/100 % 10;
                     power -= 5;
-
                     _grid[i, j] = power;
-
                 }
             }
 
@@ -37,19 +37,19 @@ namespace AOC.Season2018.D11
             var y = -1;
             var size = -1;
             var max = long.MinValue;
-            for (int i = 0; i < _len; i++)
+            for (int i = 0; i < _length; i++)
             {
-                for (int j = 0; j < _len; j++)
+                for (int j = 0; j < _length; j++)
                 {
-                    long tempPower = 0;
+                    long power = 0;
                     var maxIndex = Math.Max(i, j);
-                    for (int k = 0; k + maxIndex < _len; k++)
+                    for (int k = 0; k + maxIndex < _length; k++)
                     {
-                        var power = GetPower(i, j, k + 1);
-                        tempPower += power;
-                        if (tempPower > max)
+                        var tempPower = GetPower(i, j, k + 1);
+                        power += tempPower;
+                        if (power > max)
                         {
-                            max = tempPower;
+                            max = power;
                             x = i + 1;
                             y = j + 1;
                             size = k + 1;
@@ -58,6 +58,8 @@ namespace AOC.Season2018.D11
                 }
             }
 
+            var diff = Environment.TickCount - time;
+            Console.WriteLine(diff);
             Console.WriteLine($"{x},{y},{size}");
         }
 
@@ -65,22 +67,14 @@ namespace AOC.Season2018.D11
         {
             long result = 0;
             var xIndex = x + size - 1;
-            if (xIndex < _len)
-            {
-                for (int i = y; i < y + size && i < _len; i++)
-                {
+            if (xIndex < _length)
+                for (int i = y; i < y + size && i < _length; i++)
                     result += _grid[xIndex, i];
-                }
-            }
 
             var yIndex = y + size - 1;
-            if (yIndex < _len)
-            {
-                for (int i = x; i < x + size - 1 && i < _len; i++)
-                {
+            if (yIndex < _length)
+                for (int i = x; i < x + size - 1 && i < _length; i++)
                     result += _grid[i, yIndex];
-                }
-            }
 
             return result;
         }
