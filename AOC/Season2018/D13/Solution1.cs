@@ -30,7 +30,7 @@ namespace AOC.Season2018.D13
                     
                     if (current == '^')
                     {
-                        var cart = new Cart { X = i, Y = j };
+                        var cart = new Cart { Y = i, X = j };
                         cart.Direction = Directions.Up;
                         _board[i, j] = '|';
                         _carts.Add(cart);
@@ -38,7 +38,7 @@ namespace AOC.Season2018.D13
                     }
                     else if (current == '>')
                     {
-                        var cart = new Cart { X = i, Y = j };
+                        var cart = new Cart { Y = i, X = j };
                         cart.Direction = Directions.Right;
                         _board[i, j] = '-';
                         _carts.Add(cart);
@@ -46,7 +46,7 @@ namespace AOC.Season2018.D13
                     }
                     else if (current == 'v')
                     {
-                        var cart = new Cart { X = i, Y = j };
+                        var cart = new Cart { Y = i, X = j };
                         cart.Direction = Directions.Down;
                         _board[i, j] = '|';
                         _carts.Add(cart);
@@ -54,7 +54,7 @@ namespace AOC.Season2018.D13
                     }
                     else if (current == '<')
                     {
-                        var cart = new Cart { X = i, Y = j };
+                        var cart = new Cart { Y = i, X = j };
                         cart.Direction = Directions.Left;
                         _board[i, j] = '-';
                         _carts.Add(cart);
@@ -74,19 +74,19 @@ namespace AOC.Season2018.D13
         {
             foreach (var cart in _carts.OrderBy(t => t.Y).ThenBy(t => t.X))
             {
-                var current = _board[cart.X, cart.Y];
-                var nextX = -1;
-                var nextY = -1;
-                
+                var current = _board[cart.Y, cart.X];
+                _pos[cart.Y, cart.X] = false;
+                cart.Move(current);               
 
-                if (_pos[nextX, nextY])
+                if (_pos[cart.Y, cart.X])
                 {
-                    Console.WriteLine($"{nextY},{nextY}");
+                    Console.WriteLine($"{cart.X},{cart.Y}");
                     return false;
                 }
 
+                _pos[cart.Y, cart.X] = true;
             }
-            return false;
+            return true;
         }
 
         class Cart
@@ -98,51 +98,159 @@ namespace AOC.Season2018.D13
 
             public void Move(char current)
             {
-                if (current == '+')
-                {
-                    var intersection = Intersactions % 3;
-                    if (intersection == 0)
-                    {
-                        MoveLeft();
-                        Direction = Directions.Left;
-                    }
-                    else if (intersection == 2)
-                    {
-                        MoveLeft();
-                        Direction = Directions.Left;
-                    }
-                }
-
                 if (Direction == Directions.Up)
                 {
                     if (current == '/')
                     {
-                        MoveUpRight();
+                        MoveRight();
+                        Direction = Directions.Right;
                     }
                     else if (current == '\\')
                     {
-                        MoveUpLeft();
+                        MoveLeft();
+                        Direction = Directions.Left;
+                    }
+                    else if (current == '+')
+                    {
+                        var intersection = Intersactions % 3;
+                        Intersactions++;
+                        if (intersection == 0)
+                        {
+                            MoveLeft();
+                            Direction = Directions.Left;
+                            return;
+                        }
+                        else if (intersection == 2)
+                        {
+                            MoveRight();
+                            Direction = Directions.Right;
+                            return;
+                        }
+                        else
+                            MoveUp();
                     }
                     else
                         MoveUp();
+                }
+                else if (Direction == Directions.Right)
+                {
+                    if (current == '/')
+                    {
+                        MoveUp();
+                        Direction = Directions.Up;
+                    }
+                    else if (current == '\\')
+                    {
+                        MoveDown();
+                        Direction = Directions.Down;
+                    }
+                    else if (current == '+')
+                    {
+                        var intersection = Intersactions % 3;
+                        Intersactions++;
+                        if (intersection == 0)
+                        {
+                            MoveUp();
+                            Direction = Directions.Up;
+                            return;
+                        }
+                        else if (intersection == 2)
+                        {
+                            MoveDown();
+                            Direction = Directions.Down;
+                            return;
+                        }
+                        else
+                            MoveRight();
+                    }
+                    else
+                        MoveRight();
+                }
+                else if (Direction == Directions.Down)
+                {
+                    if (current == '/')
+                    {
+                        MoveLeft();
+                        Direction = Directions.Left;
+                    }
+                    else if (current == '\\')
+                    {
+                        MoveRight();
+                        Direction = Directions.Right;
+                    }
+                    else if (current == '+')
+                    {
+                        var intersection = Intersactions % 3;
+                        Intersactions++;
+                        if (intersection == 0)
+                        {
+                            MoveRight();
+                            Direction = Directions.Right;
+                            return;
+                        }
+                        else if (intersection == 2)
+                        {
+                            MoveLeft();
+                            Direction = Directions.Left;
+                            return;
+                        }
+                        else
+                            MoveDown();
+                    }
+                    else
+                        MoveDown();
+                }
+                else if (Direction == Directions.Left)
+                {
+                    if (current == '/')
+                    {
+                        MoveDown();
+                        Direction = Directions.Down;
+                    }
+                    else if (current == '\\')
+                    {
+                        MoveUp();
+                        Direction = Directions.Up;
+                    }
+                    else if (current == '+')
+                    {
+                        var intersection = Intersactions % 3;
+                        Intersactions++;
+                        if (intersection == 0)
+                        {
+                            MoveDown();
+                            Direction = Directions.Down;
+                            return;
+                        }
+                        else if (intersection == 2)
+                        {
+                            MoveUp();
+                            Direction = Directions.Up;
+                            return;
+                        }
+                        else
+                            MoveLeft();
+                    }
+                    else
+                        MoveLeft();
                 }
             }
 
             public void MoveUp()
             {
-                X -= 1;
+                Y -= 1;
             }
             public void MoveDown()
             {
-                X += 1;
+                Y += 1;
             }
             public void MoveLeft()
             {
-                Y -= 1;
+                X -= 1;
             }
             public void MoveRight()
             {
-                Y += 1;
+                X += 1;
             }
             public void MoveUpLeft()
             {
@@ -168,8 +276,6 @@ namespace AOC.Season2018.D13
                 MoveRight();
                 Direction = Directions.Right;
             }
-
-
 
             public void MoveLeftUp()
             {
