@@ -14,14 +14,16 @@ namespace AOC.Season2018.D15
         private int _len;
         private List<Cell> _players = new List<Cell>();
         private int _rounds;
-        private int _elfCount;
+        private int _elfs;
+        private int _globins;
+        private int _playerIndex;
+        private Cell[] _sortedPlayers;
+        private bool _foundWinner;
+        private bool _validRound;
         private int _increase;
-
+        
         public override void FindSolution()
         {
-            // Todo: refactor
-            // Improve the method NextRound to use the variable found
-
             _lines = _stream.ReadStringDocument();
 
             while (true)
@@ -32,113 +34,55 @@ namespace AOC.Season2018.D15
                 while (true)
                 {
                     //Print();
-                    var completed = NextRound();
+                    NextRound();
 
-                    if (completed)
+                    if (_elfKilled)
+                        break;
+
+                    if (_foundWinner)
                     {
-                        if (ElfWin())
+                        if (!_elfKilled)
                         {
-                            Print();
+                            //Print();
                             var totalHP = _players.Sum(t => t.HP);
                             Console.WriteLine($"rounds: {_rounds}");
                             Console.WriteLine($"hp: {totalHP}");
-                            Console.WriteLine($"attack: {3 + _increase}");
                             var solution = totalHP * _rounds;
                             Console.WriteLine(solution);
                             return;
                         }
-                        break;
                     }
                 }
             }
-
         }
 
-        private bool ElfWin()
+        private void NextRound()
         {
-            return _players.Count(t => t.Type == Type.E) == _elfCount;
-        }
-
-        private bool NextRound()
-        {
-            if (_players.GroupBy(t => t.Type).Count() == 1)
+            _validRound = false;
+            _sortedPlayers = _players.OrderBy(t => t.Y).ThenBy(t => t.X).ToArray();
+            for (int i = 0; i < _sortedPlayers.Length && !_foundWinner && !_elfKilled; i++)
             {
-                return true;
-            }
-            //var found = false;
-            foreach (var player in _players.OrderBy(t => t.Y).ThenBy(t => t.X).ToArray())
-            {
+                _playerIndex = i;
+                var player = _sortedPlayers[i];
                 if (player.Type == Type.Space)
                     continue;
 
-                FindTargets(player);
+                FindTarget(player);
                 if (_target == null)
                     continue;
 
-                //found = true;
+                _validRound = true;
                 if (_attack)
                     Attack();
                 else
                 {
                     Move();
-                    TryAttack();
+                    var attack = TryAttack();
                 }
             }
 
-            //_rounds++;
-
-            var groupCount = _players.GroupBy(t => t.Type).Count();
-            if (groupCount > 1)
+            if (_validRound)
                 _rounds++;
-
-            return groupCount == 1;
-        }
-
-        private void TryAttack()
-        {
-            _target = null;
-            var up = _player.Y > 0 ? _board[_player.Y - 1, _player.X] : null;
-            var validUp = ValidAdj(up);
-
-            var left = _player.X > 0 ? _board[_player.Y, _player.X - 1] : null;
-            var validLeft = ValidAdj(left);
-
-            var right = _player.X < _len - 1 ? _board[_player.Y, _player.X + 1] : null;
-            var validRight = ValidAdj(right);
-
-            var down = _player.Y < _len - 1 ? _board[_player.Y + 1, _player.X] : null;
-            var validDown = ValidAdj(down);
-
-            if (validUp || validRight || validLeft || validDown)
-            {
-                Attack();
-            }
-        }
-
-        private void Move()
-        {
-            var tempX = _start.X;
-            var tempY = _start.Y;
-            _board[_start.Y, _start.X] = _player;
-            _board[_player.Y, _player.X] = _start;
-
-            _start.Y = _player.Y;
-            _start.X = _player.X;
-            _player.Y = tempY;
-            _player.X = tempX;
-        }
-
-        private void Attack()
-        {
-            _target.HP -= _player.Attack;
-            if (_target.HP <= 0)
-                KillTarget();
-        }
-
-        private void KillTarget()
-        {
-            _players.Remove(_target);
-            _target.Type = Type.Space;
         }
 
         private bool[,] _map;
@@ -148,7 +92,7 @@ namespace AOC.Season2018.D15
         private Cell _start;
         private bool _attack;
         private Queue<(int x, int y, int dist, Cell start)> _queue = new Queue<(int, int y, int, Cell)>();
-        private void FindTargets(Cell player)
+        private void FindTarget(Cell player)
         {
             _player = player;
             _map = new bool[_len, _len];
@@ -221,60 +165,46 @@ namespace AOC.Season2018.D15
             var left = cell.X > 0 ? _board[cell.Y, cell.X - 1] : null;
             if (ValidTarget(left))
             {
-                Consider(cell, dist, start);
+                Check(cell, dist, start);
                 return;
             }
 
             var right = cell.X < _len - 1 ? _board[cell.Y, cell.X + 1] : null;
             if (ValidTarget(right))
             {
-                Consider(cell, dist, start);
+                Check(cell, dist, start);
                 return;
             }
 
             var up = cell.Y > 0 ? _board[cell.Y - 1, cell.X] : null;
             if (ValidTarget(up))
             {
-                Consider(cell, dist, start);
+                Check(cell, dist, start);
                 return;
             }
 
             var down = cell.Y < _len - 1 ? _board[cell.Y + 1, cell.X] : null;
             if (ValidTarget(down))
             {
-                Consider(cell, dist, start);
+                Check(cell, dist, start);
                 return;
             }
         }
 
-        private void Consider(Cell cell, int dist, Cell start)
+        private void Check(Cell cell, int dist, Cell start)
         {
             if (_target == null)
-            {
                 SelectTarget(cell, dist, start);
-            }
             else
             {
                 if (dist < _targetDist)
-                {
                     SelectTarget(cell, dist, start);
-                }
-                else if (dist == _targetDist)
+                else if (dist == _targetDist && cell.Y <= _target.Y)
                 {
-                    if (cell.Y <= _target.Y)
-                    {
-                        if (cell.Y < _target.Y || cell.X < _target.X)
-                            SelectTarget(cell, dist, start);
-                        else if (cell.X == _target.X && cell.Y == _target.Y)
-                        {
-                            if (start.Y <= _start.Y)
-                            {
-                                if (start.Y < _start.Y || start.X < _start.X)
-                                    SelectTarget(cell, dist, start);
-                            }
-                        }
-                    }
-
+                    if (cell.Y < _target.Y || cell.X < _target.X)
+                        SelectTarget(cell, dist, start);
+                    else if (cell.X == _target.X && cell.Y == _target.Y && start.Y <= _start.Y && (start.Y < _start.Y || start.X < _start.X))
+                        SelectTarget(cell, dist, start);
                 }
             }
         }
@@ -291,18 +221,95 @@ namespace AOC.Season2018.D15
             _start = start;
         }
 
+        private void Move()
+        {
+            var tempX = _start.X;
+            var tempY = _start.Y;
+            _board[_start.Y, _start.X] = _player;
+            _board[_player.Y, _player.X] = _start;
+
+            _start.Y = _player.Y;
+            _start.X = _player.X;
+            _player.Y = tempY;
+            _player.X = tempX;
+        }
+
+        private void Attack()
+        {
+            _target.HP -= _player.Attack;
+            if (_target.HP <= 0)
+                KillTarget();
+        }
+
+        private bool TryAttack()
+        {
+            _target = null;
+            var up = _player.Y > 0 ? _board[_player.Y - 1, _player.X] : null;
+            var validUp = ValidAdj(up);
+
+            var left = _player.X > 0 ? _board[_player.Y, _player.X - 1] : null;
+            var validLeft = ValidAdj(left);
+
+            var right = _player.X < _len - 1 ? _board[_player.Y, _player.X + 1] : null;
+            var validRight = ValidAdj(right);
+
+            var down = _player.Y < _len - 1 ? _board[_player.Y + 1, _player.X] : null;
+            var validDown = ValidAdj(down);
+
+            if (validUp || validRight || validLeft || validDown)
+            {
+                Attack();
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool _elfKilled;
+        private void KillTarget()
+        {
+            if (_target.Type == Type.Elf)
+            {
+                _elfKilled = true;
+            }
+            else
+            {
+                _globins--;
+                if (_globins == 0)
+                    VerifyEndOfRound(Type.Elf);
+            }
+            _players.Remove(_target);
+            _target.Type = Type.Space;
+        }
+
+        private void VerifyEndOfRound(Type type)
+        {
+            _foundWinner = true;
+            for (int i = _playerIndex + 1; i < _sortedPlayers.Length; i++)
+            {
+                var tempPlayer = _sortedPlayers[i];
+                if (tempPlayer.Type == type)
+                {
+                    _validRound = false;
+                    return;
+                }
+            }
+        }
+
         private void ReadBoard()
         {
+            _foundWinner = false;
             _len = _lines.Count;
             _board = new Cell[_len, _len];
-            _elfCount = 0;
-            _rounds = 0;
+            _elfKilled = false;
+            _elfs = 0;
+            _globins = 0;
             _players.Clear();
+            _rounds = 0;
 
             for (int i = 0; i < _len; i++)
             {
                 var line = _lines[i];
-
                 for (int j = 0; j < _len; j++)
                 {
                     var curr = line[j];
@@ -315,18 +322,19 @@ namespace AOC.Season2018.D15
                         cell.Type = Type.Wall;
                     else if (curr == 'G')
                     {
-                        cell.Type = Type.G;
+                        cell.Type = Type.Globin;
                         cell.HP = 200;
                         cell.Attack = 3;
                         _players.Add(cell);
+                        _globins++;
                     }
                     else if (curr == 'E')
                     {
-                        cell.Type = Type.E;
+                        cell.Type = Type.Elf;
                         cell.HP = 200;
                         cell.Attack = 3 + _increase;
                         _players.Add(cell);
-                        _elfCount++;
+                        _elfs++;
                     }
                     else
                         cell.Type = Type.Space;
@@ -339,12 +347,12 @@ namespace AOC.Season2018.D15
         {
             Console.WriteLine();
             Console.WriteLine($"After round {_rounds}");
-            var elf = _players.Where(t => t.Type == Type.E);
+            var elf = _players.Where(t => t.Type == Type.Elf);
             Console.Write("E -> ");
             foreach (var item in elf)
                 Console.Write($"{item.HP}, ");
             Console.WriteLine();
-            var gob = _players.Where(t => t.Type == Type.G);
+            var gob = _players.Where(t => t.Type == Type.Globin);
             Console.Write("G -> ");
             foreach (var item in gob)
                 Console.Write($"{item.HP}, ");
@@ -365,7 +373,7 @@ namespace AOC.Season2018.D15
             public int Y { get; set; }
             public int HP { get; set; }
             public Type Type { get; set; }
-            public int Attack { get; set; }
+            public int Attack { get; internal set; }
 
             internal void Print()
             {
@@ -373,9 +381,9 @@ namespace AOC.Season2018.D15
                     Console.Write("#");
                 else if (Type == Type.Space)
                     Console.Write(".");
-                else if (Type == Type.G)
+                else if (Type == Type.Globin)
                     Console.Write("G");
-                else if (Type == Type.E)
+                else if (Type == Type.Elf)
                     Console.Write("E");
             }
         }
@@ -384,9 +392,8 @@ namespace AOC.Season2018.D15
         {
             Wall = 1,
             Space = 2,
-            E = 3,
-            G = 4
+            Elf = 3,
+            Globin = 4
         }
     }
-    
 }
