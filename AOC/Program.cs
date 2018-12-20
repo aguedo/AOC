@@ -8,7 +8,7 @@ namespace AOC
         static void Main(string[] args)
         {           
 
-            using (var solution = new Season2018.D18.Solution2())
+            using (var solution = new Season2018.D19.Solution1())
                 solution.FindSolution();
         }
     }
