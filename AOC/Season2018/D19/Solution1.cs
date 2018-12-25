@@ -18,6 +18,8 @@ namespace AOC.Season2018.D19
         {
             ReadInstructions();
 
+            _register[0] = 1;
+
             while (_register[_registryPointer] < _instructions.Count)
             {
                 //Console.WriteLine(_register);
