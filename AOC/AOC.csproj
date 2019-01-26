@@ -97,6 +97,8 @@
     <Compile Include="Season2018\D18\Solution2.cs" />
     <Compile Include="Season2018\D19\Solution1.cs" />
     <Compile Include="Season2018\D19\Solution2.cs" />
+    <Compile Include="Season2018\D24\Solution1.cs" />
+    <Compile Include="Season2018\D24\Solution2.cs" />
     <Compile Include="Season2018\D25\Solution1.cs" />
     <Compile Include="Season2018\D25\Solution2.cs" />
   </ItemGroup>
