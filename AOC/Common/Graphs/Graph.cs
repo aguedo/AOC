@@ -88,10 +88,15 @@ namespace AOC.Common.Graphs
 
         public bool ContainsEdge(K id1, K id2)
         {
-            var containsDirect = _adjacents[id1] != null && _adjacents[id1].Any(t => t.Id.Equals(id2));
+            var containsDirect = ContainsDirectEdge(id1, id2);
             if (containsDirect)
                 return true;
-            return !IsDirected ? _adjacents[id2] != null && _adjacents[id2].Any(t => t.Id.Equals(id1)) : false;
+            return !IsDirected && ContainsDirectEdge(id2, id1);
+        }
+
+        private bool ContainsDirectEdge(K id1, K id2)
+        {
+            return _adjacents.TryGetValue(id1, out HashSet<Node<K, T>> adjacents) && adjacents.Any(t => t.Id.Equals(id1));
         }
 
         public bool ContainsNode(Node<K, T> node)
